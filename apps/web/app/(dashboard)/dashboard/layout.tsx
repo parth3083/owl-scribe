@@ -3,7 +3,7 @@ import { buttonVariants } from "../../../../../packages/ui/components/ui/button"
 import { Modal } from "../../../components/modal";
 import { cn } from "../../../lib/utils";
 
-import { Bell, LucideIcon, Menu, Ticket, X } from "lucide-react";
+import { CircleCheck, LucideIcon, Menu, Pencil, Smile, X, Zap } from "lucide-react";
 import Link from "next/link";
 import React, { ReactNode, useState } from "react";
 
@@ -23,13 +23,23 @@ const SIDEBAR_ITEMS: SidebarCategory[] = [
     items: [
       {
         href: "/dashboard",
-        icon: Bell,
-        text: "Alerts",
+        icon: Zap,
+        text: "Summarizer",
       },
       {
-        href: "/dashboard/tickets",
-        icon: Ticket,
-        text: "Tickets",
+        href: "/dashboard/paraphrase",
+        icon: Pencil,
+        text: "Paraphraser",
+      },
+      {
+        href: "/dashboard/grammar-checker",
+        icon: CircleCheck,
+        text: "Grammar Checker",
+      },
+      {
+        href: "/dashboard/tone-adjuster",
+        icon: Smile,
+        text: "Tone Adjuster",
       },
     ],
   },
@@ -51,18 +61,18 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
               <p className="text-xs font-medium leading-6 text-zinc-500">
                 {category}
               </p>
-              <div className="-mx-2 flex flex-1 flex-col">
+              <div className="-mx-2 flex flex-1 flex-col gap-2">
                 {items.map((item, i) => (
                   <Link
                     href={item.href}
                     key={i}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
-                      "w-full justify-start group flex items-center gap-x-2.5 rounded-md px-2 py-1.5 text-sm font-medium leading-6 text-zinc-700 hover:bg-gray-50 transition"
+                      "w-full justify-start group flex items-center gap-x-2.5 rounded-md px-2 py-1.5 text-sm font-medium leading-6 text-zinc-700 hover:bg-gray-50 hover:text-[#8B4513] transition-colors"
                     )}
                     onClick={onClose}
                   >
-                    <item.icon className="size-4 text-zinc-500 group-hover:text-zinc-700" />
+                    <item.icon className="size-4 text-zinc-500 group-hover:text-[#8B4513]" />
                     {item.text}
                   </Link>
                 ))}
