@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
+import "./globals.css";
+ import { Viaoda_Libre } from "next/font/google";
+
+const viaoda = Viaoda_Libre({
+  subsets: ["latin"],
+  variable: "--font-viaoda",
+  weight:"400"
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${viaoda.className} antialiased`}>
         {children}
       </body>
     </html>
