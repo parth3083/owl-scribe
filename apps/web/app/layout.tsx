@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${quickSand.className} antialiased w-screen flex flex-col items-center bg-[#F5EFE8] text-[#3e2c1c]  min-h-screen`}
+        className={`${quickSand.className} antialiased w-screen flex flex-col items-center bg-[#F5EFE8] text-[#8B4513]  min-h-screen`}
       >
         <Navbar/>
         {children}
