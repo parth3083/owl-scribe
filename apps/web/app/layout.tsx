@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
- import { Viaoda_Libre } from "next/font/google";
+import { Quicksand } from "next/font/google";
+import Navbar from "../components/Navbar";
 
-const viaoda = Viaoda_Libre({
+const quickSand = Quicksand({
   subsets: ["latin"],
   variable: "--font-viaoda",
-  weight:"400"
+    
 });
-
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${viaoda.className} antialiased`}>
+      <body
+        className={`${quickSand.className} antialiased w-screen flex flex-col items-center bg-[#F5EFE8] text-[#3e2c1c]  min-h-screen`}
+      >
+        <Navbar/>
         {children}
       </body>
     </html>
