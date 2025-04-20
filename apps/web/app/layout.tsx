@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-
+import  { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import { Quicksand } from "next/font/google";
-
 
 const quickSand = Quicksand({
   subsets: ["latin"],
   variable: "--font-viaoda",
-    
 });
 
 export const metadata: Metadata = {
@@ -25,6 +23,7 @@ export default function RootLayout({
       <body
         className={`${quickSand.className} antialiased min-h-[calc(100vh-1px)] flex flex-col bg-[#F5EFE8] text-[#8B4513]  `}
       >
+        <Toaster/>
         {children}
       </body>
     </html>
