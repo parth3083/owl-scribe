@@ -13,18 +13,23 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const schema = z.object({
-  mode: z.string(),
-  text: z.string().max(150 * 5, "Text exceeds maximum word count"), // Rough character limit
-  modeType: z.string().optional(),
+  mode: z.string().optional(),
+  text: z
+    .string()
+    .max(150 * 5, "Text exceeds maximum word count")
+    ,
+  modeType: z.string(),
 });
 
 type SchemaType = z.infer<typeof schema>;
 
 function DashboardPageContent() {
   const pathname = usePathname();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [outputText, setOutputText] = useState("");
 
   const outputRef = useRef<HTMLDivElement>(null); // Ref for the text content
 
@@ -44,10 +49,11 @@ function DashboardPageContent() {
 
   // Determine mode type from pathname
   const getMode = () => {
-    if (pathname === "/dashboard") return "summarize";
-    else if (pathname === "/dashboard/paraphrase") return "paraphrase";
-    else if (pathname === "/dashboard/grammar-checker") return "Grammar Checker";
-    else if (pathname === "/dashboard/tone-adjuster") return "Tone Adjuster";
+    if (pathname === "/dashboard") return "summarizer";
+    else if (pathname === "/dashboard/paraphrase") return "paraphraser";
+    else if (pathname === "/dashboard/grammar-checker")
+      return "grammar checker";
+    else if (pathname === "/dashboard/tone-adjuster") return "tone-adjuster";
     else return "default";
   };
 
@@ -70,7 +76,7 @@ function DashboardPageContent() {
       return [
         "professional",
         "casual",
-        
+
         "formal",
         "persuasive",
         "informative",
@@ -88,7 +94,7 @@ function DashboardPageContent() {
       ? "To rewrite text, enter or paste it here and press 'Summarize'"
       : pathname === "/dashboard/paraphrase"
         ? "To paraphrase text, enter or paste it here and press 'Paraphrase'"
-        : pathname === "/dashboard/grammar-checker" 
+        : pathname === "/dashboard/grammar-checker"
           ? "Start by writing or pasting the text and press 'Grammar checker'"
           : pathname === "/dashboard/tone-adjuster"
             ? "Paste the text and select the tone and press 'Tone adjuster'"
@@ -100,6 +106,7 @@ function DashboardPageContent() {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<SchemaType>({
     resolver: zodResolver(schema),
@@ -112,7 +119,7 @@ function DashboardPageContent() {
 
   useEffect(() => {
     setValue("modeType", getMode());
-    setValue("mode", ""); // Reset mode when path changes
+    setValue("mode", "");
   }, [pathname, setValue]);
 
   const text = watch("text");
@@ -141,12 +148,23 @@ function DashboardPageContent() {
     setValue("mode", mode);
   };
 
-  const onSubmit = (data: SchemaType) => {
-    alert(JSON.stringify(data, null, 2));
+  const onSubmit = async (data: SchemaType) => {
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/scriber", { data });
+      setOutputText(response.data.result); // Save the result in state
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!");
+      setLoading(false);
+    }
   };
 
   // Only show mode options for paraphrase and tone adjuster
-  const shouldShowModes = pathname === "/dashboard/paraphrase" || pathname === "/dashboard/tone-adjuster";
+  const shouldShowModes =
+    pathname === "/dashboard/paraphrase" ||
+    pathname === "/dashboard/tone-adjuster";
   const modeOptions = getModeOptions();
 
   return (
@@ -158,7 +176,10 @@ function DashboardPageContent() {
             {pathname === "/dashboard/tone-adjuster" ? "Tones : " : "Modes : "}
           </h3>
           <div className="w-full md:h-full flex-1 flex items-center overflow-x-auto pb-2 md:pb-0">
-            <Tabs defaultValue="account" className="w-full md:w-fit px-2 md:px-5">
+            <Tabs
+              defaultValue="account"
+              className="w-full md:w-fit px-2 md:px-5"
+            >
               <TabsList className="flex items-center gap-2 md:gap-3 flex-nowrap">
                 {modeOptions.map((item, index) => (
                   <TabsTrigger
@@ -187,7 +208,7 @@ function DashboardPageContent() {
           onSubmit={handleSubmit(onSubmit)}
         >
           <Textarea
-            className="h-64 lg:h-[90%] border-none text-md text-black outline-none"
+            className="h-64 lg:h-[90%] leading-6 border-none text-md text-black outline-none"
             placeholder={placeholderText}
             {...register("text")}
             onChange={handleChange}
@@ -202,8 +223,8 @@ function DashboardPageContent() {
               type="submit"
               className="px-3 md:px-4 py-1 border border-[#8B4513] text-white bg-[#8B4513] rounded-full cursor-pointer text-sm md:text-md"
             >
-              {pathname === "/dashboard" 
-                ? "Summarize" 
+              {pathname === "/dashboard"
+                ? "Summarize"
                 : pathname === "/dashboard/paraphrase"
                   ? "Paraphrase"
                   : pathname === "/dashboard/grammar-checker"
@@ -217,30 +238,36 @@ function DashboardPageContent() {
         </form>
         {/* Output section */}
         <div className="w-full lg:w-1/2 p-3 flex flex-col gap-2 relative">
-          {loading ? (<>
-            <div className="w-full h-full  flex flex-col gap-3 ">
-              {[...Array(5)].map((_, index) => (
-                <div key={index} className={`w-full animate-pulse h-5 rounded-md bg-gray-400 ${index ===0?"mt-5":""}`}></div>
-              ))}
-              <p className="w-full text-md text-center text-black mt-5">Owl scriber is analyzing your text...</p>
-            </div></>) : (<>
-            <div
-            ref={outputRef}
-            className="h-64 lg:h-[95%] capitalize text-black p-1 overflow-y-auto"
-          >
-            dnkjo nkj jwenc jsdncjkwdnc kowdn iowenc iweoncisdnciosdnc iooi
-            nionckodsnciosd cksdnckdsnciowdhc oioncidsciohfionvklds
-            pcl;kdmfclksdjikdjfiod inkdlsnfkldsn pdfkdsnfklsdnfkd
-            nklsdnfkdfhnioen fonfkodsnfikodnf iinf kodnfinefnfdi sifdkfnihf
-            ionickdnf idof iohnf ioiodfnidonsf iewhnf idnfpdsfnpodj
-            pwemmf&apos;df awjf eioniosdnf fiodfnk ajfiokmnfiojfnikadnfkgnir
-          </div>
-          <div className="w-full h-8 flex items-center justify-end">
-            <Copy
-              onClick={handleCopy}
-              className="size-4 md:size-5 text-black cursor-pointer"
-            />
-          </div></>)}
+          {loading ? (
+            <>
+              <div className="w-full h-full  flex flex-col gap-3 ">
+                {[...Array(5)].map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-full animate-pulse h-5 rounded-md bg-gray-400 ${index === 0 ? "mt-5" : ""}`}
+                  ></div>
+                ))}
+                <p className="w-full text-md text-center text-black mt-5">
+                  Owl scriber is analyzing your text...
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div
+                ref={outputRef}
+                className="h-64 lg:h-[95%] capitalize text-sm leading-6 text-black p-1 overflow-y-auto"
+              >
+            {outputText}
+              </div>
+              <div className="w-full h-8 flex items-center justify-end">
+                <Copy
+                  onClick={handleCopy}
+                  className="size-4 md:size-5 text-black cursor-pointer"
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

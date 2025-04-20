@@ -3,16 +3,16 @@ import { smartResponse } from "../../../utils/smartResponse";
 
 export async function POST(request: NextRequest) {
   try {
-    const { text, mode, modeType } = await request.json();
-
-    if (!text || !mode) {
+    const body = await request.json();
+    const { text, mode, modeType } = body.data || {};
+    if (!text || !modeType  ) {
       return NextResponse.json(
-        { message: "Both 'text' and 'mode' are required." },
+        { message: "Both 'text' and 'modeType' are required." },
         { status: 400 }
       );
     }
 
-    const result = await smartResponse(text, mode, modeType); 
+    const result = await smartResponse(text,  modeType,mode); 
 
     return NextResponse.json({ result }, { status: 200 });
   } catch (error) {

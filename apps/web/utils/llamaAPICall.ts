@@ -4,23 +4,23 @@ const llama = new InferenceClient(process.env.NEXT_PUBLIC_HUGGING_FACE);
 
 export async function llamaAPICall(
   text: string,
-  mode: string,
-  modeType?: string
+  modeType: string,
+  mode?: string,
 ): Promise<string | undefined> {
   try {
     let prompt = "";
 
-    switch (mode.toLowerCase()) {
+    switch ((modeType || "").toLowerCase()) {
       case "paraphraser":
         prompt = `Paraphrase the following text${mode ? ` in a ${mode} tone` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
         break;
       case "summarizer":
         prompt = `Summarize the following text${mode ? ` in a ${mode} style` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
         break;
-      case "grammar checker":
+      case "grammar-checker":
         prompt = `Correct any grammatical errors in the following text${mode ? ` and make it sound ${mode}` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
         break;
-      case "tone adjuster":
+      case "tone-adjuster":
         prompt = `Rewrite the following text in a ${mode} tone without giving options or extra information and make it quick and optimized: "${text}"`;
         break;
       default:

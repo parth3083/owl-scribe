@@ -15,7 +15,7 @@ ${geminiOutput}
 Response B:
 ${llamaOutput}
 
-Choose the better response or generate a new and better version that combines the strengths of both A and B. The output should be accurate, concise, humanized and natural sounding. Do not mention A or B. Just return the improved response.`;
+Choose the better response or generate a new and better version that combines the strengths of both A and B. The output should be accurate, concise and natural sounding. Do not mention A or B. Just return the improved response and nothing else and do give options.`;
 
     const chatCompletion = await llama.chatCompletion({
       provider: "fireworks-ai",

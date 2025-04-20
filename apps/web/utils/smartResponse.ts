@@ -16,14 +16,14 @@ const withTimeout = <T>(promise: Promise<T>, timeoutMs: number): Promise<T | "ti
 
 export async function smartResponse(
   text: string,
-  mode: string,
-  modeType?: string
+  modeType: string,
+  mode?: string,
 ): Promise<string> {
   try {
-    const timeoutMs = 5000; // 5 seconds max
+    const timeoutMs = 7000; // 5 seconds max
 
-    const geminiPromise = geminiAPICall(text, mode, modeType);
-    const llamaPromise = llamaAPICall(text, mode, modeType);
+    const geminiPromise = geminiAPICall(text,  modeType,mode);
+    const llamaPromise = llamaAPICall(text,  modeType,mode);
 
     const [geminiResult, llamaResult] = await Promise.allSettled([
       withTimeout(geminiPromise, timeoutMs),
