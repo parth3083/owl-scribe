@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { llamaAPICall } from "../../../utils/llamaAPICall";
-
-
+import { smartResponse } from "../../../utils/smartResponse";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,14 +12,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await llamaAPICall(text, mode, modeType);
+    const result = await smartResponse(text, mode, modeType); 
 
-    return NextResponse.json(
-      { result },
-      { status: 200 }
-    );
+    return NextResponse.json({ result }, { status: 200 });
   } catch (error) {
-    console.error("Gemini API Route Error:", error);
+    console.error("SmartResponse API Route Error:", error);
     return NextResponse.json(
       { message: "Internal server error", error },
       { status: 500 }
