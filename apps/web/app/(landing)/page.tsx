@@ -29,10 +29,7 @@ function page() {
               tone for perfect content every time.
             </p>
             <div className="w-full flex items-center gap-5">
-              <Button className="px-4  py-1 border border-[#8B4513]  text-[#8B4513] rounded-full cursor-pointer hover:bg-[#8B4513] flex items-center gap-2 hover:text-white transition-colors text-xl  duration-200 ease-in-out">
-                Add to Chrome
-                <ArrowRight className="size-5" />
-              </Button>
+
               <ShinyButton
                 href="/dashboard"
                 className="capitalize relative text-xl px-4  py-1 rounded-full w-fit  shadow-xl transition-shadow duration-300 hover:shadow-xl "
@@ -775,44 +772,7 @@ function page() {
                   </div>
                 </li>
               </ul>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/"
-                  className="bg-[#8B4513] hover:bg-[#6d3610] text-white font-Nunito py-3 px-8 rounded-full text-center transition-colors duration-300 flex items-center justify-center"
-                >
-                  <span>Add to Chrome</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 ml-2"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                </Link>
-                <button
-                  id="watch-demo-btn"
-                  className="border border-[#8B4513] text-[#8B4513] hover:bg-[#8B4513]/10 font-Nunito py-3 px-8 rounded-full text-center transition-colors duration-300 flex items-center justify-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-2"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  <span>Watch Video Demo</span>
-                </button>
-              </div>
+              
             </div>
           </div>
         </section>

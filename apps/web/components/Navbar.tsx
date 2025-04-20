@@ -20,9 +20,7 @@ function Navbar() {
       </div>
         <span>Owl Scribe </span>
       </Link>
-      <Button className='px-4 py-1 border border-[#8B4513]  text-[#8B4513] rounded-full cursor-pointer hover:bg-[#8B4513] hover:text-white transition-colors   duration-200 ease-in-out'>
-        Add to Chrome
-</Button>
+ 
 
     </div>
   )
