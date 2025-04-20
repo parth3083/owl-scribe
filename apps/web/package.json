@@ -11,6 +11,8 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@google/genai": "^0.9.0",
+    "@google/generative-ai": "^0.24.0",
     "@prisma/client": "6.6.0",
     "@repo/ui": "workspace:*",
     "@tailwindcss/postcss": "^4.1.4",
