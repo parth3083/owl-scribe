@@ -88,7 +88,7 @@ function page() {
             {featureData.map((items, index) => (
               <Card
                 key={index}
-                className="w-full  lg:h-[400px] sm:w-xl  rounded-md p-3"
+                className="w-full  lg:h-[415px] sm:w-xl  rounded-md p-3"
               >
                 <CardHeader>
                   <CardTitle className="flex flex-col gap-2">
@@ -122,7 +122,7 @@ function page() {
           </div>
         </section>
         {/* DATA SECTION  */}
-        <section className="data-section w-full relative h-32 rounded-md border p-3 flex items-center justify-evenly bg-[#FAF8F3]">
+        <section className="data-section w-full relative lg:h-32 rounded-md border p-3 flex flex-col gap-5 sm:gap-0 sm:flex-row items-center justify-evenly bg-[#FAF8F3]">
           {dataDisplay.map((items, index) => (
             <div
               key={index}
