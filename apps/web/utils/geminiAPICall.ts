@@ -10,19 +10,19 @@ export async function geminiAPICall(
 
     switch (mode.toLowerCase()) {
       case "paraphraser":
-        prompt = `Paraphrase the following text${modeType ? ` in a ${modeType} tone` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
+        prompt = `Paraphrase the following text${mode ? ` in a ${mode} tone` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
         break;
       case "summarizer":
-        prompt = `Summarize the following text${modeType ? ` in a ${modeType} style` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
+        prompt = `Summarize the following text${mode ? ` in a ${mode} style` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
         break;
       case "grammar checker":
-        prompt = `Correct any grammatical errors in the following text${modeType ? ` and make it sound ${modeType}` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
+        prompt = `Correct any grammatical errors in the following text${mode ? ` and make it sound ${mode}` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
         break;
       case "tone adjuster":
-        prompt = `Rewrite the following text in a ${modeType} tone without giving options or extra information and make it quick and optimized: "${text}"`;
+        prompt = `Rewrite the following text in a ${mode} tone without giving options or extra information and make it quick and optimized: "${text}"`;
         break;
       default:
-        prompt = `${mode} the following text${modeType ? ` in ${modeType} style` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
+        prompt = `${modeType} the following text${mode ? ` in ${mode} style` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
     }
 
     const response = await ai.models.generateContent({

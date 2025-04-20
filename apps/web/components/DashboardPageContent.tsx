@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Textarea } from "../../../packages/ui/components/ui/textarea";
 import { Button } from "../../../packages/ui/components/ui/button";
 import { usePathname } from "next/navigation";
@@ -24,6 +24,7 @@ type SchemaType = z.infer<typeof schema>;
 
 function DashboardPageContent() {
   const pathname = usePathname();
+  const [loading, setLoading] = useState(false)
 
   const outputRef = useRef<HTMLDivElement>(null); // Ref for the text content
 
@@ -216,7 +217,14 @@ function DashboardPageContent() {
         </form>
         {/* Output section */}
         <div className="w-full lg:w-1/2 p-3 flex flex-col gap-2 relative">
-          <div
+          {loading ? (<>
+            <div className="w-full h-full  flex flex-col gap-3 ">
+              {[...Array(5)].map((_, index) => (
+                <div key={index} className={`w-full animate-pulse h-5 rounded-md bg-gray-400 ${index ===0?"mt-5":""}`}></div>
+              ))}
+              <p className="w-full text-md text-center text-black mt-5">Owl scriber is analyzing your text...</p>
+            </div></>) : (<>
+            <div
             ref={outputRef}
             className="h-64 lg:h-[95%] capitalize text-black p-1 overflow-y-auto"
           >
@@ -232,7 +240,7 @@ function DashboardPageContent() {
               onClick={handleCopy}
               className="size-4 md:size-5 text-black cursor-pointer"
             />
-          </div>
+          </div></>)}
         </div>
       </div>
     </div>
