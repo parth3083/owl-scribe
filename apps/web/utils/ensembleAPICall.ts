@@ -1,6 +1,4 @@
-import { InferenceClient } from "@huggingface/inference";
-
-const llama = new InferenceClient(process.env.NEXT_PUBLIC_HUGGING_FACE);
+import { ai } from "../config/gemini";
 
 export async function ensembleAPICall(
   geminiOutput: string,
@@ -17,21 +15,21 @@ ${llamaOutput}
 
 Choose the better response or generate a new and better version that combines the strengths of both A and B. The output should be accurate, concise and natural sounding. Do not mention A or B. Just return the improved response and nothing else and do give options.`;
 
-    const chatCompletion = await llama.chatCompletion({
-      provider: "fireworks-ai",
-      model: "meta-llama/Llama-4-Scout-17B-16E-Instruct",
-      messages: [
-        {
-          role: "user",
-          content: prompt,
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash-preview-04-17",
+      contents: prompt,
+      config: {
+        thinkingConfig: {
+          thinkingBudget: 1024,
         },
-      ],
-      max_tokens: 1024,
+      },
     });
-    return (
-      chatCompletion.choices[0]?.message?.content ??
-      "No valid response generated."
-    );
+
+    if (response && response.text) {
+      return response.text.trim();
+    } else {
+      return "No response text received from Gemini API.";
+    }
   } catch (error) {
     console.error("Ensemble API error:", error);
     return "Something went wrong while ensembling the response.";

@@ -42,7 +42,6 @@ export async function llamaAPICall(
     
   } catch (error) {
     console.error("LLaMA API error:", error);
-    console.log("LLaMA API error:", error);
     return "Something went wrong while processing the request.";
   }
 }
