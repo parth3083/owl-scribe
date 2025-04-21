@@ -1,6 +1,9 @@
-import { InferenceClient } from "@huggingface/inference";
+import OpenAI from 'openai';
 
-const llama = new InferenceClient(process.env.NEXT_PUBLIC_HUGGING_FACE);
+const openai = new OpenAI({
+  apiKey: process.env.NEXT_PUBLIC_NVIDIA_API_KEY,
+  baseURL: 'https://integrate.api.nvidia.com/v1',
+});
 
 export async function llamaAPICall(
   text: string,
@@ -27,18 +30,21 @@ export async function llamaAPICall(
         prompt = `${modeType} the following text${mode ? ` in ${mode} style` : ""} without giving options or extra information and make it quick and optimized: "${text}"`;
     }
 
-    const chatCompletion  = await llama.chatCompletion({
-      provider: "fireworks-ai",
-      model: "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    const completion = await openai.chat.completions.create({
+      model: "meta/llama-3.1-405b-instruct",
       messages: [
         {
           role: "user",
           content: prompt,
         },
       ],
+      temperature: 0.2,
+      top_p: 0.7,
       max_tokens: 1024,
     });
-   return chatCompletion.choices[0]?.message?.content
+
+    const content = completion.choices[0]?.message?.content;
+    return content !== null ? content : undefined;
     
   } catch (error) {
     console.error("LLaMA API error:", error);

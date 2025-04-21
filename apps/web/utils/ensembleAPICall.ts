@@ -1,9 +1,14 @@
-import { ai } from "../config/gemini";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.NEXT_PUBLIC_NVIDIA_API_KEY,
+  baseURL: "https://integrate.api.nvidia.com/v1",
+});
 
 export async function ensembleAPICall(
   geminiOutput: string,
   llamaOutput: string
-): Promise<string> {
+): Promise<string | undefined> {
   try {
     const prompt = `You are given two responses for the same input task.
 
@@ -15,21 +20,21 @@ ${llamaOutput}
 
 Choose the better response or generate a new and better version that combines the strengths of both A and B. The output should be accurate, concise and natural sounding. Do not mention A or B. Just return the improved response and nothing else and do give options.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-preview-04-17",
-      contents: prompt,
-      config: {
-        thinkingConfig: {
-          thinkingBudget: 1024,
+    const completion = await openai.chat.completions.create({
+      model: "meta/llama-3.1-405b-instruct",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
         },
-      },
+      ],
+      temperature: 0.2,
+      top_p: 0.7,
+      max_tokens: 1024,
     });
 
-    if (response && response.text) {
-      return response.text.trim();
-    } else {
-      return "No response text received from Gemini API.";
-    }
+    const content = completion.choices[0]?.message?.content;
+    return content !== null ? content : undefined;
   } catch (error) {
     console.error("Ensemble API error:", error);
     return "Something went wrong while ensembling the response.";
