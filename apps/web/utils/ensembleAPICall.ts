@@ -8,7 +8,7 @@ const openai = new OpenAI({
 export async function ensembleAPICall(
   geminiOutput: string,
   llamaOutput: string
-): Promise<string | undefined> {
+): Promise<string > {
   try {
     const prompt = `You are given two responses for the same input task.
 
@@ -34,7 +34,7 @@ Choose the better response or generate a new and better version that combines th
     });
 
     const content = completion.choices[0]?.message?.content;
-    return content !== null ? content : undefined;
+    return content || "No response generated.";
   } catch (error) {
     console.error("Ensemble API error:", error);
     return "Something went wrong while ensembling the response.";
